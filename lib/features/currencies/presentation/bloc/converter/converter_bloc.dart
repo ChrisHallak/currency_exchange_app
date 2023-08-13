@@ -65,12 +65,12 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
             input2 = '';
           }
           emit(CurrencyConvertedState());
-        } else if (event is ClearEvent) {
-          print('clear event');
-          input1 = '';
-          input2 = '';
-          emit(DataCleanedState());
         }
+      } else if (event is ClearEvent) {
+        print('clear event');
+        input1 = '';
+        input2 = '';
+        emit(DataCleanedState());
       }
     });
   }
