@@ -7,7 +7,7 @@ import '../../../../core/styles/text.dart';
 
 class CurrencyDropDown extends StatefulWidget {
   String? selected;
-  List<Currency> cachedCurrencies;
+  List<Currency>? cachedCurrencies;
   CurrencyDropDown(
       {required super.key,
       required this.selected,
@@ -48,7 +48,7 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
                         widget.selected = newValue;
                       });
                     },
-                    items: widget.cachedCurrencies.map((Currency currency) {
+                    items: widget.cachedCurrencies!.map((Currency currency) {
                       return DropdownMenuItem<String>(
                         value: currency.code.toString(),
                         // value: _mySelection,

@@ -13,5 +13,3 @@ class GetFilteredCurrenciesEvent extends CurrenciesEvent {
   final String search;
   GetFilteredCurrenciesEvent({required this.search});
 }
-
-class GetCachedCurrenciesEvent extends CurrenciesEvent {}

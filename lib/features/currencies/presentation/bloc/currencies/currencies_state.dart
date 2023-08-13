@@ -27,8 +27,3 @@ class GetFilteredCurrenciesLoadedState extends CurrenciesState {
   final List<Currency> filteredCurrencies;
   const GetFilteredCurrenciesLoadedState({required this.filteredCurrencies});
 }
-
-class GetCachedCurrenciesState extends CurrenciesState {
-  final List<Currency> cachedCurrencies;
-  const GetCachedCurrenciesState({required this.cachedCurrencies});
-}

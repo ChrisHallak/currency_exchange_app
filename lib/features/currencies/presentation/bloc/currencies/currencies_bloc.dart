@@ -50,16 +50,6 @@ class CurrenciesBloc extends Bloc<CurrenciesEvent, CurrenciesState> {
             await getFilteredCurrenciesUsecase.call(event.search);
         emit(GetFilteredCurrenciesLoadedState(
             filteredCurrencies: filterdCurrencies));
-      } else if (event is GetCachedCurrenciesEvent) {
-        var cachedCurrencies = await getCachedCurrenciesUsecase.call();
-        List<Currency> cachedCurrenciesShort = [];
-        for (int i = 0; i < 10; i++) {
-          if (cachedCurrencies[i].code == 'THB') {
-            cachedCurrencies[i].flag = 'https://mychangeab.se//flags//THB.png';
-          }
-          cachedCurrenciesShort.add(cachedCurrencies[i]);
-        }
-        emit(GetCachedCurrenciesState(cachedCurrencies: cachedCurrenciesShort));
       }
     });
   }

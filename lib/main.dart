@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_exchange/features/currencies/presentation/bloc/converter/converter_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/bloc/currencies/currencies_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/pages/logo_page.dart';
 import 'package:my_exchange/my_observer.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<CurrenciesBloc>(
           create: (context) => di.sl<CurrenciesBloc>(),
+        ),
+        BlocProvider<ConverterBloc>(
+          create: (context) => di.sl<ConverterBloc>(),
         )
       ],
       child: AnnotatedRegion(

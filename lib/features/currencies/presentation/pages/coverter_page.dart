@@ -103,10 +103,13 @@ class _ConverterPageState extends State<ConverterPage> {
 
 */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_exchange/core/styles/colors.dart';
 import 'package:my_exchange/features/currencies/domain/entities/currency.dart';
+import 'package:my_exchange/features/currencies/presentation/bloc/converter/converter_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/bloc/currencies/currencies_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/widgets/currency_dropdown.dart';
 import 'package:my_exchange/features/currencies/presentation/widgets/logo_widget.dart';
@@ -122,8 +125,6 @@ class _ConverterPageState extends State<ConverterPage> {
   @override
   void initState() {
     print('init state in converter page');
-
-    BlocProvider.of<CurrenciesBloc>(context).add(GetCachedCurrenciesEvent());
   }
 
   List<Currency> currencies = [
@@ -203,40 +204,75 @@ class _ConverterPageState extends State<ConverterPage> {
     GlobalKey _key2 = GlobalKey();
     String? _selected1 = "USD";
     String? _selected2 = "AUD";
-    return BlocConsumer<CurrenciesBloc, CurrenciesState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocConsumer<ConverterBloc, ConverterState>(
+      listener: (context, state) {},
       builder: (context, state) {
-        print('converter page build $state');
-        if (state is GetCachedCurrenciesState) {
-          return Column(
-            children: <Widget>[
-              LogoWidget(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Buy',
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-                ),
+        ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
+
+        return Column(
+          children: <Widget>[
+            LogoWidget(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Buy',
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
               ),
-              CurrencyDropDown(
-                  key: _key1,
-                  selected: _selected1,
-                  cachedCurrencies: state.cachedCurrencies),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
+            ),
+            CurrencyDropDown(
+                key: _key1,
+                selected: _selected1,
+                cachedCurrencies: converterBloc.currenciesList),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                        width: 1,
+                        color: PRIMARY_STROKE_COLOR,
+                      ),
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.swap_vert_sharp,
+                        color: PRIMARY_STROKE_COLOR,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            CurrencyDropDown(
+                key: _key2,
+                selected: _selected2,
+                cachedCurrencies: converterBloc.currenciesList),
+            SizedBox(
+              height: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 40,
+                  ),
+                  Container(
+                      width: 80,
+                      height: 30,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5),
@@ -245,71 +281,32 @@ class _ConverterPageState extends State<ConverterPage> {
                           color: PRIMARY_STROKE_COLOR,
                         ),
                       ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.swap_vert_sharp,
-                          color: PRIMARY_STROKE_COLOR,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
+                      child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Clear',
+                            style: STYLE6,
+                          ))),
+                ],
               ),
-              CurrencyDropDown(
-                  key: _key2,
-                  selected: _selected2,
-                  cachedCurrencies: state.cachedCurrencies),
-              SizedBox(
-                height: 0,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'current foreign currencies exchange',
+                    style: STYLE7,
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                        width: 80,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            width: 1,
-                            color: PRIMARY_STROKE_COLOR,
-                          ),
-                        ),
-                        child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Clear',
-                              style: STYLE6,
-                            ))),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'current foreign currencies exchange',
-                      style: STYLE7,
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        }
-        return SizedBox();
+            )
+          ],
+        );
       },
     );
   }

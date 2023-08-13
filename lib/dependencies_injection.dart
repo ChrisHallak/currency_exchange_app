@@ -8,6 +8,7 @@ import 'package:my_exchange/features/currencies/domain/repositories/currencies_r
 import 'package:my_exchange/features/currencies/domain/usecases/get_all_currencies_usecase.dart';
 import 'package:my_exchange/features/currencies/domain/usecases/get_cached_currencies.dart';
 import 'package:my_exchange/features/currencies/domain/usecases/get_filtered_currencies_usecase.dart';
+import 'package:my_exchange/features/currencies/presentation/bloc/converter/converter_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/bloc/currencies/currencies_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,7 @@ Future<void> init() async {
       getFilteredCurrenciesUsecase: sl(),
       getCachedCurrenciesUsecase: sl()));
 
+  sl.registerFactory(() => ConverterBloc());
 // Usecases
 
   sl.registerLazySingleton(() => GetAllCurrenciesUsecase(currenciesRepo: sl()));

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_exchange/core/styles/colors.dart';
 import 'package:my_exchange/core/util.dart';
+import 'package:my_exchange/features/currencies/presentation/bloc/converter/converter_bloc.dart';
 import 'package:my_exchange/features/currencies/presentation/bloc/currencies/currencies_bloc.dart';
 
 import '../widgets/build_currency_item.dart';
@@ -40,6 +41,8 @@ class _CurrencyExchangePageState extends State<CurrencyExchangePage> {
                 color: PRIMARY500_COLOR,
               )));
         } else if (state is GetAllCurrenciesLoadedState) {
+          BlocProvider.of<ConverterBloc>(context)
+              .add(SetCurrenciesListEvent(currenciesList: state.allCurrencies));
           return buildCurrenciesList(state.allCurrencies);
         } else if (state is GetFilteredCurrenciesLoadedState) {
           return buildCurrenciesList(state.filteredCurrencies);
