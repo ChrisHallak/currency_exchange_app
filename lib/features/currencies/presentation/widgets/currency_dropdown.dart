@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_exchange/features/currencies/domain/entities/currency.dart';
-import 'package:my_exchange/features/currencies/presentation/widgets/build_currency_item.dart';
 
 import '../../../../core/styles/colors.dart';
 import '../../../../core/styles/text.dart';
