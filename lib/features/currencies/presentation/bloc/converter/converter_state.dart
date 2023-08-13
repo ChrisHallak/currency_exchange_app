@@ -1,12 +1,18 @@
 part of 'converter_bloc.dart';
 
-sealed class ConverterState extends Equatable {
+sealed class ConverterState {
   const ConverterState();
-
-  @override
-  List<Object> get props => [];
 }
 
 final class ConverterInitial extends ConverterState {}
 
 final class CurrenciesListState extends ConverterState {}
+
+final class CurrencyChoosenState extends ConverterState {
+  String? currency;
+  CurrencyChoosenState({required this.currency});
+}
+
+class CurrencyConvertedState extends ConverterState {}
+
+class DataCleanedState extends ConverterState {}

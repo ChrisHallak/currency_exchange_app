@@ -114,6 +114,7 @@ import 'package:my_exchange/features/currencies/presentation/bloc/currencies/cur
 import 'package:my_exchange/features/currencies/presentation/widgets/currency_dropdown.dart';
 import 'package:my_exchange/features/currencies/presentation/widgets/logo_widget.dart';
 
+import '../../../../core/constants.dart';
 import '../../../../core/styles/text.dart';
 
 class ConverterPage extends StatefulWidget {
@@ -127,88 +128,19 @@ class _ConverterPageState extends State<ConverterPage> {
     print('init state in converter page');
   }
 
-  List<Currency> currencies = [
-    /*Currency(code: 'USD', currency: 'US Dollar', flag: '🇺🇸'),
-    Currency(code: 'EUR', currency: 'Euro', flag: '🇪🇺'),
-    Currency(code: 'JPY', currency: 'Japanese Yen', flag: '🇯🇵'),*/
-    // Add more currencies here...
-    Currency(
-        code: 'USD',
-        currency: 'US Dollar',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'EUR',
-        currency: 'Euro',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'JPY',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'SYR',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'LDF',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'EFF',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'EEE ',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'AAA',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'ZZZ',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'FFF',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'GGG',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'HHH',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'TTT',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'WWW',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'QQQ',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-    Currency(
-        code: 'PPP',
-        currency: 'Japanese Yen',
-        flag: 'https://mychangeab.se/flags/EUR.png'),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    GlobalKey _key1 = GlobalKey();
-    GlobalKey _key2 = GlobalKey();
-    String? _selected1 = "USD";
-    String? _selected2 = "AUD";
     return BlocConsumer<ConverterBloc, ConverterState>(
       listener: (context, state) {},
       builder: (context, state) {
+        print('converter page builder $state');
+        firstKey = Key('FIRST KEY');
+        secondKey = Key('SECOND KEY');
+        TextEditingController controller1 = TextEditingController();
+        TextEditingController controller2 = TextEditingController();
         ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
-
+        controller1.text = converterBloc.input1;
+        controller2.text = converterBloc.input2;
         return Column(
           children: <Widget>[
             LogoWidget(),
@@ -225,8 +157,9 @@ class _ConverterPageState extends State<ConverterPage> {
               ),
             ),
             CurrencyDropDown(
-                key: _key1,
-                selected: _selected1,
+                controller: controller1,
+                key: firstKey,
+                selected: converterBloc.choosen_currency1,
                 cachedCurrencies: converterBloc.currenciesList),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -256,9 +189,11 @@ class _ConverterPageState extends State<ConverterPage> {
               ),
             ),
             CurrencyDropDown(
-                key: _key2,
-                selected: _selected2,
-                cachedCurrencies: converterBloc.currenciesList),
+              key: secondKey,
+              selected: converterBloc.choosen_currency2,
+              cachedCurrencies: converterBloc.currenciesList,
+              controller: controller2,
+            ),
             SizedBox(
               height: 0,
             ),
@@ -282,7 +217,10 @@ class _ConverterPageState extends State<ConverterPage> {
                         ),
                       ),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            BlocProvider.of<ConverterBloc>(context)
+                                .add(ClearEvent());
+                          },
                           child: Text(
                             'Clear',
                             style: STYLE6,
