@@ -90,6 +90,7 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
             Container(
               width: 100,
               child: TextField(
+                textAlign: TextAlign.center,
                 controller: widget.controller,
                 onEditingComplete: () {
                   setState(() {
