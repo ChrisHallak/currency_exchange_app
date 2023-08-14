@@ -14,10 +14,12 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
   String? choosen_currency2 = "AUD";
   String input1 = '';
   String input2 = '';
+  bool switchIndex = false;
 
   ConverterBloc() : super(ConverterInitial()) {
     on<ConverterEvent>((event, emit) {
       if (event is SetCurrenciesListEvent) {
+        currenciesList = [];
         for (int i = 0; i < 10; i++) {
           if (event.currenciesList[i].code == 'THB') {
             event.currenciesList[i].flag =
@@ -40,10 +42,11 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         }
         ;
       } else if (event is ConvertCurrencyEvent) {
-        if (event.key == firstKey) {
-          if (event.input != '') {
-            print('event.key = first key');
+        print('UNIQUE  ${event.key}');
+        if (switchIndex == false) {
+          print('first condition');
 
+          if (event.input != '') {
             double firstCurrencyValue = double.parse(event.input);
             double secondCurrenyValue = firstCurrencyValue * 2;
             input1 = event.input;
@@ -53,8 +56,8 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
             input1 = '';
           }
           emit(CurrencyConvertedState());
-        } else if (event.key == secondKey) {
-          print('event.key = secondKey');
+        } else if (switchIndex) {
+          print('second condition');
           if (event.input != '') {
             double secondCurrencyValue = double.parse(event.input);
             double firstCurrenyValue = secondCurrencyValue / 2.0;
@@ -71,6 +74,34 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         input1 = '';
         input2 = '';
         emit(DataCleanedState());
+      } else if (event is SwitchEvent) {
+        print("switch event");
+        String tempInput = input1;
+        String? tempChoosenCurrency = choosen_currency1;
+        UniqueKey? tempKey = firstKey;
+        input1 = input2;
+        input2 = tempInput;
+
+        choosen_currency1 = choosen_currency2;
+        choosen_currency2 = tempChoosenCurrency;
+        print('FIRST KEY PREV $firstKey');
+        print('SECOND KEY PREV $secondKey');
+        print('PREVUOUS');
+        firstKey = secondKey;
+        secondKey = tempKey;
+        print('FIRST KEY $firstKey');
+        print('SECOND KEY $secondKey');
+        print('before $switchIndex');
+        switchIndex = !switchIndex;
+        print('after $switchIndex');
+        emit(CurrenciesSwitchedState());
+      } else if (event is ConverterResetEvent) {
+        choosen_currency1 = "USD";
+        choosen_currency2 = "AUD";
+        input1 = '';
+        input2 = '';
+        switchIndex = false;
+        emit(ResetState());
       }
     });
   }

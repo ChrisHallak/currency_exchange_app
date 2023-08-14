@@ -25,3 +25,10 @@ class ConvertCurrencyEvent extends ConverterEvent {
 }
 
 class ClearEvent extends ConverterEvent {}
+
+class SwitchEvent extends ConverterEvent {
+  final bool switchIndex;
+  const SwitchEvent({required this.switchIndex});
+}
+
+class ConverterResetEvent extends ConverterEvent {}

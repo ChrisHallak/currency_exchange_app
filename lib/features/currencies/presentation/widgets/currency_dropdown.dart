@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_exchange/core/constants.dart';
 import 'package:my_exchange/features/currencies/domain/entities/currency.dart';
 import 'package:my_exchange/features/currencies/presentation/bloc/converter/converter_bloc.dart';
 
@@ -10,11 +11,12 @@ class CurrencyDropDown extends StatefulWidget {
   String? selected;
   List<Currency>? cachedCurrencies;
   TextEditingController controller;
-  CurrencyDropDown(
-      {required super.key,
-      required this.selected,
-      required this.cachedCurrencies,
-      required this.controller});
+  CurrencyDropDown({
+    super.key,
+    required this.selected,
+    required this.cachedCurrencies,
+    required this.controller,
+  });
 
   @override
   State<CurrencyDropDown> createState() => CurrencyDropDownState();
@@ -23,7 +25,9 @@ class CurrencyDropDown extends StatefulWidget {
 class CurrencyDropDownState extends State<CurrencyDropDown> {
   @override
   Widget build(BuildContext context) {
+    print('WIDGET build ${widget.key}');
     return Padding(
+      key: widget.key,
       padding: const EdgeInsets.all(20.0),
       child: Container(
         height: 80,
@@ -87,11 +91,12 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
               width: 100,
               child: TextField(
                 controller: widget.controller,
-                decoration: InputDecoration(),
                 onEditingComplete: () {
-                  BlocProvider.of<ConverterBloc>(context).add(
-                      ConvertCurrencyEvent(
-                          key: widget.key, input: widget.controller.text));
+                  setState(() {
+                    BlocProvider.of<ConverterBloc>(context).add(
+                        ConvertCurrencyEvent(
+                            key: widget.key, input: widget.controller.text));
+                  });
                 },
               ),
             ),

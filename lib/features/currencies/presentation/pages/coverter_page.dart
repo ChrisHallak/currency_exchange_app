@@ -123,24 +123,40 @@ class ConverterPage extends StatefulWidget {
 }
 
 class _ConverterPageState extends State<ConverterPage> {
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
   @override
   void initState() {
+    BlocProvider.of<ConverterBloc>(context).add(ConverterResetEvent());
     print('init state in converter page');
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConverterBloc, ConverterState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is CurrenciesSwitchedState) {
+          print('FIRST KEY IN LISTENER ${firstKey}');
+          TextEditingController tempController = controller1;
+          setState(() {
+            /*controller1 = controller2;
+            controller2 = tempController;*/
+          });
+
+          /* setState(() {
+            UniqueKey? tempKey = firstKey;
+            firstKey = secondKey;
+            secondKey = firstKey;
+          }); */
+        }
+      },
       builder: (context, state) {
         print('converter page builder $state');
-        firstKey = Key('FIRST KEY');
-        secondKey = Key('SECOND KEY');
-        TextEditingController controller1 = TextEditingController();
-        TextEditingController controller2 = TextEditingController();
+
         ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
         controller1.text = converterBloc.input1;
         controller2.text = converterBloc.input2;
+
         return Column(
           children: <Widget>[
             LogoWidget(),
@@ -170,7 +186,9 @@ class _ConverterPageState extends State<ConverterPage> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: BlocProvider.of<ConverterBloc>(context).switchIndex
+                          ? PRIMARY_STROKE_COLOR
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         width: 1,
@@ -180,9 +198,20 @@ class _ConverterPageState extends State<ConverterPage> {
                     child: IconButton(
                       icon: Icon(
                         Icons.swap_vert_sharp,
-                        color: PRIMARY_STROKE_COLOR,
+                        color:
+                            BlocProvider.of<ConverterBloc>(context).switchIndex
+                                ? Colors.white
+                                : PRIMARY_STROKE_COLOR,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        bool curIndex =
+                            BlocProvider.of<ConverterBloc>(context).switchIndex;
+
+                        setState(() {
+                          BlocProvider.of<ConverterBloc>(context)
+                              .add(SwitchEvent(switchIndex: !curIndex));
+                        });
+                      },
                     ),
                   ),
                 ],

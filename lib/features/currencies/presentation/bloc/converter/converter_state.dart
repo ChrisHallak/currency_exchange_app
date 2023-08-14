@@ -16,3 +16,7 @@ final class CurrencyChoosenState extends ConverterState {
 class CurrencyConvertedState extends ConverterState {}
 
 class DataCleanedState extends ConverterState {}
+
+class CurrenciesSwitchedState extends ConverterState {}
+
+class ResetState extends ConverterState {}

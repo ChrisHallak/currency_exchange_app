@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-Key? firstKey;
+UniqueKey? firstKey = UniqueKey();
 
-Key? secondKey;
+UniqueKey? secondKey = UniqueKey();
