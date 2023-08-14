@@ -125,37 +125,59 @@ class ConverterPage extends StatefulWidget {
 class _ConverterPageState extends State<ConverterPage> {
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
+  // GlobalKey firstWidgetKey = GlobalKey();
+  // GlobalKey secondWidgetKey = GlobalKey();
   @override
   void initState() {
     BlocProvider.of<ConverterBloc>(context).add(ConverterResetEvent());
     print('init state in converter page');
   }
-
+int chooseOne1=1;
+  int chooseOne2=2;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConverterBloc, ConverterState>(
       listener: (context, state) {
         if (state is CurrenciesSwitchedState) {
-          print('FIRST KEY IN LISTENER ${firstKey}');
-          TextEditingController tempController = controller1;
-          setState(() {
-            /*controller1 = controller2;
-            controller2 = tempController;*/
-          });
+          print('FIRST KEY IN LISTENER ');
 
-          /* setState(() {
-            UniqueKey? tempKey = firstKey;
-            firstKey = secondKey;
-            secondKey = firstKey;
-          }); */
+
+
+
         }
+        if(state is CurrencyConvertedState)
+          {
+            if(state.oneChoosed==1)
+              {
+                print("in first");
+                ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
+                controller1.text = converterBloc.input1;
+                controller2.text = converterBloc.input2;
+              }
+            else{
+              print("in second");
+              ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
+              controller2.text = converterBloc.input1;
+              controller1.text = converterBloc.input2;
+            }
+          }
+        else
+          {
+            print("in third");
+            ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
+            controller1.text = converterBloc.input1;
+            controller2.text = converterBloc.input2;
+          }
       },
       builder: (context, state) {
-        print('converter page builder $state');
+
+        print("first and second${firstKey}${secondKey}");
 
         ConverterBloc converterBloc = BlocProvider.of<ConverterBloc>(context);
-        controller1.text = converterBloc.input1;
-        controller2.text = converterBloc.input2;
+
+
+
+       print('converter page builder ${converterBloc.input1}${converterBloc.input2}${controller1}${controller2}');
 
         return Column(
           children: <Widget>[
@@ -173,8 +195,10 @@ class _ConverterPageState extends State<ConverterPage> {
               ),
             ),
             CurrencyDropDown(
+              chooseOne: chooseOne1,
                 controller: controller1,
-                key: firstKey,
+                keyChoose: firstKey!,
+
                 selected: converterBloc.choosen_currency1,
                 cachedCurrencies: converterBloc.currenciesList),
             Padding(
@@ -204,6 +228,18 @@ class _ConverterPageState extends State<ConverterPage> {
                                 : PRIMARY_STROKE_COLOR,
                       ),
                       onPressed: () {
+                      //  setState(() {
+                          UniqueKey tempKey = firstKey!;
+                          firstKey = secondKey;
+                          secondKey = tempKey ;
+                         //  TextEditingController tempController = controller1;
+                         //  controller1=controller2;
+                         // controller2=tempController;
+                          int chooseTemp=0;
+                          chooseTemp= chooseOne1;
+                          chooseOne1= chooseOne2;
+                          chooseOne2=  chooseTemp;
+                   //     });
                         bool curIndex =
                             BlocProvider.of<ConverterBloc>(context).switchIndex;
 
@@ -218,7 +254,8 @@ class _ConverterPageState extends State<ConverterPage> {
               ),
             ),
             CurrencyDropDown(
-              key: secondKey,
+            chooseOne: chooseOne1,
+              keyChoose: secondKey!,
               selected: converterBloc.choosen_currency2,
               cachedCurrencies: converterBloc.currenciesList,
               controller: controller2,

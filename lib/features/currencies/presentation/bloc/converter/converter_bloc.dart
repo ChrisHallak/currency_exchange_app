@@ -15,6 +15,7 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
   String input1 = '';
   String input2 = '';
   bool switchIndex = false;
+ final UniqueKey firstKeybloc=firstKey! ;
 
   ConverterBloc() : super(ConverterInitial()) {
     on<ConverterEvent>((event, emit) {
@@ -42,32 +43,36 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         }
         ;
       } else if (event is ConvertCurrencyEvent) {
-        print('UNIQUE  ${event.key}');
-        if (switchIndex == false) {
+        print('UNIQUE  ${event.key}${firstKey}');
+        if (event.key==firstKeybloc) {
           print('first condition');
 
           if (event.input != '') {
             double firstCurrencyValue = double.parse(event.input);
             double secondCurrenyValue = firstCurrencyValue * 2;
-            input1 = event.input;
-            input2 = secondCurrenyValue.toString();
+
+                input1 = event.input;
+                input2 = secondCurrenyValue.toString();
+
+
           } else {
             input2 = '';
             input1 = '';
           }
-          emit(CurrencyConvertedState());
-        } else if (switchIndex) {
+          emit(CurrencyConvertedState(oneChoosed: event.chooseOne));
+        } else{
           print('second condition');
           if (event.input != '') {
             double secondCurrencyValue = double.parse(event.input);
             double firstCurrenyValue = secondCurrencyValue / 2.0;
+
             input2 = event.input;
             input1 = firstCurrenyValue.toString();
           } else {
             input1 = '';
             input2 = '';
           }
-          emit(CurrencyConvertedState());
+          emit(CurrencyConvertedState(oneChoosed: event.chooseOne));
         }
       } else if (event is ClearEvent) {
         print('clear event');
@@ -78,17 +83,17 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         print("switch event");
         String tempInput = input1;
         String? tempChoosenCurrency = choosen_currency1;
-        UniqueKey? tempKey = firstKey;
+       // UniqueKey? tempKey = firstKey;
         input1 = input2;
         input2 = tempInput;
-
+         print("input 1${input1}${input2}");
         choosen_currency1 = choosen_currency2;
         choosen_currency2 = tempChoosenCurrency;
         print('FIRST KEY PREV $firstKey');
         print('SECOND KEY PREV $secondKey');
         print('PREVUOUS');
-        firstKey = secondKey;
-        secondKey = tempKey;
+        // firstKey = secondKey;
+        // secondKey = tempKey;
         print('FIRST KEY $firstKey');
         print('SECOND KEY $secondKey');
         print('before $switchIndex');

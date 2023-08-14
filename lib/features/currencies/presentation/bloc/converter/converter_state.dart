@@ -13,10 +13,15 @@ final class CurrencyChoosenState extends ConverterState {
   CurrencyChoosenState({required this.currency});
 }
 
-class CurrencyConvertedState extends ConverterState {}
+class CurrencyConvertedState extends ConverterState {
+  int oneChoosed;
+  CurrencyConvertedState({required this.oneChoosed});
+}
 
 class DataCleanedState extends ConverterState {}
 
-class CurrenciesSwitchedState extends ConverterState {}
+class CurrenciesSwitchedState extends ConverterState {
+
+}
 
 class ResetState extends ConverterState {}

@@ -9,26 +9,32 @@ import '../../../../core/styles/colors.dart';
 import '../../../../core/styles/text.dart';
 
 class CurrencyDropDown extends StatefulWidget {
-  String? selected;
-  List<Currency>? cachedCurrencies;
-  TextEditingController controller;
-  CurrencyDropDown({
-    super.key,
+  final String? selected;
+  final List<Currency>? cachedCurrencies;
+  final TextEditingController controller;
+  final UniqueKey? keyChoose;
+  final int chooseOne;
+
+  const CurrencyDropDown({
+    this.keyChoose,
     required this.selected,
     required this.cachedCurrencies,
     required this.controller,
-  });
+    required this.chooseOne,
+  }):super(key: keyChoose);
 
   @override
-  State<CurrencyDropDown> createState() => CurrencyDropDownState();
+  State<CurrencyDropDown> createState() => _CurrencyDropDownState();
 }
 
-class CurrencyDropDownState extends State<CurrencyDropDown> {
+class _CurrencyDropDownState extends State<CurrencyDropDown> {
+//   @override
   @override
   Widget build(BuildContext context) {
-    print('WIDGET build ${widget.key}');
+    print('WIDGET build ${widget.controller.text}');
     return Padding(
-      key: widget.key,
+      //key: widget.keyChoose,
+      key: widget.keyChoose,
       padding: const EdgeInsets.all(20.0),
       child: Container(
         height: 80,
@@ -41,17 +47,17 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Flexible(
+            Expanded(
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
                   alignedDropdown: true,
                   child: DropdownButton<String>(
                     isDense: true,
                     hint: Text("Select Currency"),
-                    value: widget.selected,
+                    value:widget.selected,
                     onChanged: (String? value) {
                       BlocProvider.of<ConverterBloc>(context).add(
-                          ChooseCurrencyEvent(value: value, key: widget.key));
+                          ChooseCurrencyEvent(value: value, key: widget.keyChoose));
                     },
                     items: widget.cachedCurrencies!.map((Currency currency) {
                       return DropdownMenuItem<String>(
@@ -105,11 +111,12 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
                 textAlign: TextAlign.center,
                 controller: widget.controller,
                 onEditingComplete: () {
-                  setState(() {
-                    BlocProvider.of<ConverterBloc>(context).add(
-                        ConvertCurrencyEvent(
-                            key: widget.key, input: widget.controller.text));
-                  });
+                  print("the key in event${widget.keyChoose}");
+                  BlocProvider.of<ConverterBloc>(context).add(
+                      ConvertCurrencyEvent(
+                          key:widget.keyChoose,
+                          chooseOne: widget.chooseOne,
+                          input: widget.controller.text));
                 },
               ),
             ),

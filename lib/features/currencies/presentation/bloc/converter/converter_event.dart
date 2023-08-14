@@ -21,7 +21,8 @@ class ChooseCurrencyEvent extends ConverterEvent {
 class ConvertCurrencyEvent extends ConverterEvent {
   final Key? key;
   final String input;
-  const ConvertCurrencyEvent({required this.key, required this.input});
+  final int chooseOne;
+  const ConvertCurrencyEvent({required this.key, required this.input,required this.chooseOne});
 }
 
 class ClearEvent extends ConverterEvent {}
