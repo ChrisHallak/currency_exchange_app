@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_exchange/core/constants.dart';
@@ -59,9 +60,20 @@ class CurrencyDropDownState extends State<CurrencyDropDown> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Image(
+                            /*Image(
                               image: NetworkImage(currency.flag),
                               width: 30,
+                            ),*/
+                            CachedNetworkImage(
+                              imageUrl: currency.flag,
+                              width: 30,
+                              placeholder: ((context, url) => Container(
+                                    color: Colors.black,
+                                  )),
+                              errorWidget: (((context, url, error) => Container(
+                                    color: Colors.black,
+                                    child: Icon(Icons.error),
+                                  ))),
                             ),
                             Container(
                                 margin: EdgeInsets.only(left: 10),
