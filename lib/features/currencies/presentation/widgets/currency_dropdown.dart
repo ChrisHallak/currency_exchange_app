@@ -21,7 +21,7 @@ class CurrencyDropDown extends StatefulWidget {
     required this.cachedCurrencies,
     required this.controller,
     required this.chooseOne,
-  }):super(key: keyChoose);
+  }) : super(key: keyChoose);
 
   @override
   State<CurrencyDropDown> createState() => _CurrencyDropDownState();
@@ -38,7 +38,7 @@ class _CurrencyDropDownState extends State<CurrencyDropDown> {
       padding: const EdgeInsets.all(20.0),
       child: Container(
         height: 80,
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: GREY_50_COLOR,
             border: Border.all(width: 1, color: PRIMARY100_COLOR),
@@ -54,10 +54,11 @@ class _CurrencyDropDownState extends State<CurrencyDropDown> {
                   child: DropdownButton<String>(
                     isDense: true,
                     hint: Text("Select Currency"),
-                    value:widget.selected,
+                    value: widget.selected,
                     onChanged: (String? value) {
                       BlocProvider.of<ConverterBloc>(context).add(
-                          ChooseCurrencyEvent(value: value, key: widget.keyChoose));
+                          ChooseCurrencyEvent(
+                              value: value, key: widget.keyChoose));
                     },
                     items: widget.cachedCurrencies!.map((Currency currency) {
                       return DropdownMenuItem<String>(
@@ -114,7 +115,7 @@ class _CurrencyDropDownState extends State<CurrencyDropDown> {
                   print("the key in event${widget.keyChoose}");
                   BlocProvider.of<ConverterBloc>(context).add(
                       ConvertCurrencyEvent(
-                          key:widget.keyChoose,
+                          key: widget.keyChoose,
                           chooseOne: widget.chooseOne,
                           input: widget.controller.text));
                 },
